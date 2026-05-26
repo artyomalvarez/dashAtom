@@ -1,0 +1,4 @@
+function renderHome(params) {
+    return
+    
+}
