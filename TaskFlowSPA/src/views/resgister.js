@@ -1,11 +1,8 @@
-<!DOCTYPE html>
-<html lang="es">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Registro | TaskFlowSPA</title>
-  </head>
-  <body class="min-h-screen bg-gradient-to-b from-sky-50 via-white to-blue-100 text-slate-800">
+
+import { buttonlink } from "../components/atoms/registerButton"
+
+export function rederRegister(params) {
+    return `    
     <main class="grid min-h-screen lg:grid-cols-[0.95fr_1.05fr]">
       <section class="hidden border-r border-blue-100 bg-blue-600 p-10 text-white lg:flex lg:flex-col lg:justify-between">
         <a class="text-xl font-black tracking-tight" href="/src/views/home.html">TaskFlowSPA</a>
@@ -60,14 +57,42 @@
               </div>
             </div>
 
-            <a class="inline-flex items-center justify-center rounded-2xl bg-blue-600 px-5 py-3 text-sm font-bold text-white hover:bg-blue-500" href="/src/views/login.html">
-              Registrarme
-            </a>
+           ${buttonlink("/src/views/dashboard.html", "Crear cuenta")}
           </form>
         </div>
       </section>
     </main>
+    `
+}
 
-    <script type="module" src="../main.js"></script>
-  </body>
-</html>
+
+
+export function setupRegister() {
+    const registerForm = document.querySelector("form")
+    const nombreInput = document.getElementById("register-name")
+    const apellidoInput = document.getElementById("register-lastname")
+    const emailInput = document.getElementById("register-email")
+    const passwordInput = document.getElementById("register-password")
+    const roleSelect = document.getElementById("register-role") 
+
+
+    registerForm.addEventListener("submit", async (e) => {
+        e.preventDefault()
+
+        const newUser = {
+            name: nombreInput.value,
+            lastname: apellidoInput.value,
+            email: emailInput.value,
+            password: passwordInput.value,
+            roles: [roleSelect.value]
+        }
+        try {
+        await createUser(newUser)
+        alert("Usuario creado")
+        }     
+        catch (error) {
+        console.error("Error al registrar:", error)
+        }
+    })
+
+}
