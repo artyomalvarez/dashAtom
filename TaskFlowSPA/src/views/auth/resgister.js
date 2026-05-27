@@ -5,7 +5,7 @@ export function rederRegister(params) {
     return `    
     <main class="grid min-h-screen lg:grid-cols-[0.95fr_1.05fr]">
       <section class="hidden border-r border-blue-100 bg-blue-600 p-10 text-white lg:flex lg:flex-col lg:justify-between">
-        <a class="text-xl font-black tracking-tight" href="/home">TaskFlowSPA</a>
+        <a class="text-xl font-black tracking-tight" href="/">TaskFlowSPA</a>
         <div>
           <p class="text-sm font-semibold uppercase tracking-[0.3em] text-blue-100">Nuevo usuario</p>
           <h1 class="mt-4 text-5xl font-black tracking-tight">Crea tu cuenta y empieza a organizar tu flujo.</h1>
