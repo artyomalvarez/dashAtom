@@ -1,6 +1,6 @@
 
-import { buttonlink } from "../../components/atoms/registerButton.js"
-
+import { buttonSubmit } from "../../components/atoms/registerButton.js"
+import { createUser } from '../../services/user.service.js'
 export function rederRegister(params) {
     return `    
     <main class="grid min-h-screen lg:grid-cols-[0.95fr_1.05fr]">
@@ -26,7 +26,7 @@ export function rederRegister(params) {
             <a class="rounded-full border border-blue-200 px-4 py-2 text-sm font-semibold text-blue-700 hover:bg-blue-50" href="/login">Ya tengo cuenta</a>
           </div>
 
-          <form class="mt-8 grid gap-5">
+          <form id ="form-d"class="mt-8 grid gap-5">
             <div class="grid gap-5 md:grid-cols-2">
               <div>
                 <label class="mb-2 block text-sm font-medium text-slate-700" for="register-name">Nombre</label>
@@ -56,7 +56,7 @@ export function rederRegister(params) {
                 </select>
               </div>
             </div>
-            ${buttonlink("/dashboard", "Crear cuenta")}
+            ${buttonSubmit("Crear cuenta")}
           </form>
         </div>
       </section>
@@ -66,8 +66,10 @@ export function rederRegister(params) {
 
 
 
+
+
 export function setupRegister() {
-    const registerForm = document.querySelector("form")
+    const registerForm = document.getElementById("form-d")
     const nombreInput = document.getElementById("register-name")
     const apellidoInput = document.getElementById("register-lastname")
     const emailInput = document.getElementById("register-email")

@@ -22,7 +22,7 @@ export function initRouter() {
         }
         const href =link.getAttribute("href")
 
-        if (href || !href.startsWith("/")){
+        if (!href || !href.startsWith("/")){
             return
         }
 
