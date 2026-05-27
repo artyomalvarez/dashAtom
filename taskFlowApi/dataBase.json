@@ -1,5 +1,36 @@
 {
-    "users":[],
-    "tasks":[]
-
+  "users": [
+    {
+      "name": "",
+      "lastname": "",
+      "email": "",
+      "password": "",
+      "roles": [
+        "USER"
+      ],
+      "id": "14DIsz2zTUA"
+    },
+    {
+      "name": "pepito perez",
+      "lastname": "perez",
+      "email": "perez@gmail.com",
+      "password": "perezprerezperez",
+      "roles": [
+        "ADMIN"
+      ],
+      "id": "Fprp5tAtxEo"
+    },
+    {
+      "name": "pedro ",
+      "lastname": "porro",
+      "email": "aaaa@perdon",
+      "password": "12345678",
+      "roles": [
+        "ADMIN"
+      ],
+      "id": "uDkt1I44owc"
+    }
+  ],
+  "tasks": [],
+  "$schema": "./node_modules/json-server/schema.json"
 }
