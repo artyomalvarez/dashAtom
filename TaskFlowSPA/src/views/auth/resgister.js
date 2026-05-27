@@ -1,11 +1,11 @@
 
-import { buttonlink } from "../components/atoms/registerButton"
+import { buttonlink } from "../../components/atoms/registerButton.js"
 
 export function rederRegister(params) {
     return `    
     <main class="grid min-h-screen lg:grid-cols-[0.95fr_1.05fr]">
       <section class="hidden border-r border-blue-100 bg-blue-600 p-10 text-white lg:flex lg:flex-col lg:justify-between">
-        <a class="text-xl font-black tracking-tight" href="/src/views/home.html">TaskFlowSPA</a>
+        <a class="text-xl font-black tracking-tight" href="/home">TaskFlowSPA</a>
         <div>
           <p class="text-sm font-semibold uppercase tracking-[0.3em] text-blue-100">Nuevo usuario</p>
           <h1 class="mt-4 text-5xl font-black tracking-tight">Crea tu cuenta y empieza a organizar tu flujo.</h1>
@@ -17,13 +17,13 @@ export function rederRegister(params) {
       </section>
 
       <section class="flex items-center justify-center px-6 py-10">
-        <div class="w-full max-w-xl rounded-[2rem] border border-blue-100 bg-white p-8 shadow-xl shadow-blue-100/70">
+        <div class="w-full max-w-xl rounded-4xl border border-blue-100 bg-white p-8 shadow-xl shadow-blue-100/70">
           <div class="flex items-center justify-between">
             <div>
               <p class="text-sm font-semibold uppercase tracking-[0.3em] text-blue-600">Registro</p>
               <h2 class="mt-2 text-3xl font-black text-slate-900">Crear cuenta</h2>
             </div>
-            <a class="rounded-full border border-blue-200 px-4 py-2 text-sm font-semibold text-blue-700 hover:bg-blue-50" href="/src/views/login.html">Ya tengo cuenta</a>
+            <a class="rounded-full border border-blue-200 px-4 py-2 text-sm font-semibold text-blue-700 hover:bg-blue-50" href="/login">Ya tengo cuenta</a>
           </div>
 
           <form class="mt-8 grid gap-5">
@@ -56,8 +56,7 @@ export function rederRegister(params) {
                 </select>
               </div>
             </div>
-
-           ${buttonlink("/src/views/dashboard.html", "Crear cuenta")}
+            ${buttonlink("/dashboard", "Crear cuenta")}
           </form>
         </div>
       </section>
