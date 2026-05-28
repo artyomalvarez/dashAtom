@@ -81,7 +81,7 @@ export function setupRegister() {
         e.preventDefault()
 
         const newUser = {
-            name: nombreInput.value,
+            name: nombreInput.value.tring,
             lastname: apellidoInput.value,
             email: emailInput.value,
             password: passwordInput.value,
@@ -97,3 +97,5 @@ export function setupRegister() {
     })
 
 }
+
+
