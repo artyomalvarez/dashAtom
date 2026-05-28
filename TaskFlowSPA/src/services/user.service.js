@@ -10,8 +10,7 @@ async function createUser(userData) {
         if (!response.ok) {
             throw new Error("Failed to create user");
         }  
-        return await response.json();
-    } catch (error) {
+M    } catch (error) {
         console.error("Error creating user:", error);
         throw error;
     }
