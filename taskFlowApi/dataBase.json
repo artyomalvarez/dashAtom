@@ -29,6 +29,34 @@
         "ADMIN"
       ],
       "id": "uDkt1I44owc"
+    },
+    {
+      "lastname": "congo ",
+      "email": "arlavarado@congo.congo",
+      "password": "122313",
+      "roles": [
+        "USER"
+      ],
+      "id": "Kkm3fyGICH0"
+    },
+    {
+      "lastname": "congo ",
+      "email": "arlavarado@congo.congo",
+      "password": "122313",
+      "roles": [
+        "USER"
+      ],
+      "id": "vSElZVlWbMg"
+    },
+    {
+      "name": "jorgita",
+      "lastname": "congo",
+      "email": "arara@gmail.com",
+      "password": "345563",
+      "roles": [
+        "USER"
+      ],
+      "id": "B4Kqeb1aUSQ"
     }
   ],
   "tasks": [],
