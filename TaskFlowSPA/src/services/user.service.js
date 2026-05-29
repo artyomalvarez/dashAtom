@@ -30,4 +30,6 @@ async function obtainUsers() {
     }
 }
 
+
+
 export { createUser, obtainUsers }

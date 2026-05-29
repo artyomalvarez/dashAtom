@@ -2,7 +2,7 @@
 import { buttonSubmit } from "../../components/atoms/registerButton.js"
 import { createUser } from '../../services/user.service.js'
 export function rederRegister(params) {
-    return `    
+  return `    
     <main class="grid min-h-screen lg:grid-cols-[0.95fr_1.05fr]">
       <section class="hidden border-r border-blue-100 bg-blue-600 p-10 text-white lg:flex lg:flex-col lg:justify-between">
         <a class="text-xl font-black tracking-tight" href="/">TaskFlowSPA</a>
@@ -69,32 +69,37 @@ export function rederRegister(params) {
 
 
 export function setupRegister() {
-    const registerForm = document.getElementById("form-d")
-    const nombreInput = document.getElementById("register-name")
-    const apellidoInput = document.getElementById("register-lastname")
-    const emailInput = document.getElementById("register-email")
-    const passwordInput = document.getElementById("register-password")
-    const roleSelect = document.getElementById("register-role") 
+  const registerForm = document.getElementById("form-d")
+  const nombreInput = document.getElementById("register-name")
+  const apellidoInput = document.getElementById("register-lastname")
+  const emailInput = document.getElementById("register-email")
+  const passwordInput = document.getElementById("register-password")
+  const roleSelect = document.getElementById("register-role")
 
 
-    registerForm.addEventListener("submit", async (e) => {
-        e.preventDefault()
+  registerForm.addEventListener("submit", async (e) => {
+    e.preventDefault()
 
-        const newUser = {
-            name: nombreInput.value.tring,
-            lastname: apellidoInput.value,
-            email: emailInput.value,
-            password: passwordInput.value,
-            roles: [roleSelect.value]
-        }
-        try {
-        await createUser(newUser)
-        alert("Usuario creado")
-        }     
-        catch (error) {
-        console.error("Error al registrar:", error)
-        }
-    })
+    if (!nombreInput.value || !apellidoInput.value || !emailInput.value || !passwordInput.value) {
+      alert("Todos los campos son obligatorios")
+      return  
+    }
+
+    const newUser = {
+      name: nombreInput.value,
+      lastname: apellidoInput.value,
+      email: emailInput.value,
+      password: passwordInput.value,
+      roles: [roleSelect.value]
+    }
+    try {
+      await createUser(newUser)
+      alert("Usuario creado")
+    }
+    catch (error) {
+      console.error("Error al registrar:", error)
+    }
+  })
 
 }
 

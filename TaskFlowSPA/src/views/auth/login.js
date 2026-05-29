@@ -1,3 +1,5 @@
+import {obtainUsers} from "/src/services/user.service"
+
 export function renderLogin() {
     return `
     <main class="grid min-h-screen lg:grid-cols-[1fr_0.95fr]">
@@ -45,14 +47,17 @@ export function renderLogin() {
     `
     
 }
-export function setupLogin() {
-  app.addEventListener("click", (e) => {
-    if(e.target.matches("#login-btn")) {
-      // Aqui iria la logica de autenticacion, validaciones y demas para el login.
-      // Por ahora solo es un placeholder para mostrar la navegacion entre vistas.
-      router.navigate("/dashboard.html")
-    }
+export async function setupLogin() {
+  const emailInput = document.getElementById("email")
+  const passwordInput = document.getElementById("password")
+  const users = await obtainUsers();
 
 
+  const email = emailInput.input
+  const password =passwordInput.input
 
-})}
+  console.log(email, password);
+  
+    
+}
+setupLogin()
