@@ -1,11 +1,10 @@
 import { renderHome } from "../views/home" 
-import { renderLogin } from "../views/auth/login" 
-import { rederRegister } from "../views/auth/resgister"
+import { rederRegister, setupRegister } from "../views/auth/resgister"
+import { renderLogin, setupLogin } from "../views/auth/login";
 import {renderAdmin} from "../views/admin/admin"
 import { renderNotFound } from "../views/not-found"
 import { renderDashboard } from "../views/app/dashboard"
 import { renderProfile } from "../views/admin/profile"
-import { setupRegister } from "../views/auth/resgister"
 import { renderTaskForm } from "../views/tasks/task-form"
 import { renderTask } from "../views/tasks/task"
 
@@ -16,12 +15,13 @@ export const routes = {
     },
     "/login": {
         render: renderLogin,
+        setup : setupLogin,
         isAutorized: false,
     },
     "/register": {
         render: rederRegister,
         setup : setupRegister,
-        isAutorized: true,
+        isAutorized: false,
     },
     "/admin": {
         render: renderAdmin,

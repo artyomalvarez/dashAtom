@@ -48,16 +48,39 @@ export function renderLogin() {
     
 }
 export async function setupLogin() {
-  const emailInput = document.getElementById("email")
-  const passwordInput = document.getElementById("password")
-  const users = await obtainUsers();
+  const form = document.getElementById("login-form")
 
+  form.addEventListener("submit", async (e) => {
+    e.preventDefault()
 
-  const email = emailInput.input
-  const password =passwordInput.input
+    const submitBtn = form.querySelector("button[type='submit']")
+    submitBtn.disabled = true
 
-  console.log(email, password);
-  
-    
-}
-setupLogin()
+    const email = document.getElementById("email").value.trim()
+    const password = document.getElementById("password").value.trim()
+
+    if (!email || !password) {
+      alert("Por favor completa todos los campos")
+      submitBtn.disabled = false
+      return
+    }
+
+    try {
+      const users = await obtainUsers()
+      const userFound = users.find(
+        (u) => u.email === email && u.password === password
+      )
+
+      if (userFound) {
+        localStorage.setItem("currentUser", JSON.stringify(userFound))
+        window.history.pushState({}, "", userFound.roles.includes("ADMIN") ? "/admin" : "/dashboard")
+        renderRoute()
+      } else {
+        alert("Credenciales incorrectas")
+        submitBtn.disabled = false
+      }
+    } catch (error) {
+      console.error("Error en login:", error)
+      submitBtn.disabled = false
+    }
+  })}

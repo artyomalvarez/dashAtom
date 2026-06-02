@@ -1,6 +1,6 @@
-
 import { buttonSubmit } from "../../components/atoms/registerButton.js"
-import { createUser } from '../../services/user.service.js'
+import { createUser, obtainUsers } from '../../services/user.service.js'
+import { renderRoute } from '../../router/router.js'
 export function rederRegister(params) {
   return `    
     <main class="grid min-h-screen lg:grid-cols-[0.95fr_1.05fr]">
@@ -66,8 +66,6 @@ export function rederRegister(params) {
 
 
 
-
-
 export function setupRegister() {
   const registerForm = document.getElementById("form-d")
   const nombreInput = document.getElementById("register-name")
@@ -76,31 +74,54 @@ export function setupRegister() {
   const passwordInput = document.getElementById("register-password")
   const roleSelect = document.getElementById("register-role")
 
-
   registerForm.addEventListener("submit", async (e) => {
     e.preventDefault()
 
-    if (!nombreInput.value || !apellidoInput.value || !emailInput.value || !passwordInput.value) {
+    const submitBtn = registerForm.querySelector("button[type='submit']")
+    submitBtn.disabled = true
+
+    const nombre = nombreInput.value.trim()
+    const apellido = apellidoInput.value.trim()
+    const email = emailInput.value.trim()
+    const password = passwordInput.value.trim()
+
+    // campos vacios
+    if (!nombre || !apellido || !email || !password) {
       alert("Todos los campos son obligatorios")
-      return  
+      submitBtn.disabled = false
+      return
     }
 
-    const newUser = {
-      name: nombreInput.value,
-      lastname: apellidoInput.value,
-      email: emailInput.value,
-      password: passwordInput.value,
-      roles: [roleSelect.value]
-    }
     try {
+      // verifica email duplicado
+      const users = await obtainUsers()
+      const emailExists = users.some(u => u.email === email)
+
+      if (emailExists) {
+        alert("Este email ya está registrado")
+        submitBtn.disabled = false
+        return
+      }
+
+      const newUser = {
+        name: nombre,
+        lastname: apellido,
+        email: email,
+        password: password,
+        roles: [roleSelect.value]
+      }
+
       await createUser(newUser)
-      alert("Usuario creado")
-    }
-    catch (error) {
+      alert("Usuario creado exitosamente")
+      registerForm.reset()
+      window.history.pushState({}, "", "/login")
+      renderRoute()
+
+    } catch (error) {
       console.error("Error al registrar:", error)
+      submitBtn.disabled = false
     }
   })
-
 }
 
 
