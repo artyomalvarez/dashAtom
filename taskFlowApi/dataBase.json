@@ -57,6 +57,16 @@
         "USER"
       ],
       "id": "B4Kqeb1aUSQ"
+    },
+    {
+      "name": "pero",
+      "lastname": "torrez",
+      "email": "perrotorres@gmail.com",
+      "password": "123456",
+      "roles": [
+        "ADMIN"
+      ],
+      "id": "lmmIxgSU5KA"
     }
   ],
   "tasks": [],
