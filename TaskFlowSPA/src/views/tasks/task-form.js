@@ -1,20 +1,10 @@
-import { createTask, updateTask, getTasks } from '../../services/task.service.js'
+import { createTask, updateTask } from '../../services/task.service.js'
 import { renderRoute } from '../../router/router.js'
-
-
+import { renderNavbar, setupNavbar } from '../../components/organisms/Navbar.js'
 
 export function renderTaskForm() {
-    return`<header class="border-b border-blue-100 bg-white/90 backdrop-blur">
-      <div class="mx-auto flex max-w-5xl items-center justify-between px-6 py-4">
-        <a class="text-xl font-black text-blue-900" href="/">TaskFlowSPA</a>
-        <nav class="hidden gap-3 md:flex">
-          <a class="rounded-full px-4 py-2 text-sm font-semibold text-slate-600 hover:bg-blue-50 hover:text-blue-700" href="/dashboard">Dashboard</a>
-          <a class="rounded-full px-4 py-2 text-sm font-semibold text-slate-600 hover:bg-blue-50 hover:text-blue-700" href="/tasks">Tareas</a>
-          <a class="rounded-full px-4 py-2 text-sm font-semibold text-slate-600 hover:bg-blue-50 hover:text-blue-700" href="/profile">Perfil</a>
-        </nav>
-      </div>
-    </header>
-
+    return `
+    ${renderNavbar()}
     <main class="mx-auto max-w-5xl px-6 py-10">
       <section class="rounded-4xl border border-blue-100 bg-white p-8 shadow-xl shadow-blue-50">
         <p class="text-sm font-semibold uppercase tracking-[0.3em] text-blue-600">Formulario</p>
@@ -53,40 +43,42 @@ export function renderTaskForm() {
           </div>
         </form>
       </section>
-    </main>`
-    
+    </main>`;
 }
 
 export function setupTaskForm() {
-    const form = document.getElementById("task-form")
-    const submitBtn = document.getElementById("task-submit")
+    setupNavbar();
 
-    // detecta si es edicion — guarda el id en localStorage al editar
-    const editingTask = JSON.parse(localStorage.getItem("editingTask") || "null")
+    const form = document.getElementById("task-form");
+    const submitBtn = document.getElementById("task-submit");
+    if (!form) return;
+
+    const editingTask = JSON.parse(localStorage.getItem("editingTask") || "null");
 
     if (editingTask) {
-        document.getElementById("title").value = editingTask.title
-        document.getElementById("description").value = editingTask.description
-        document.getElementById("status").value = editingTask.status
-        document.getElementById("date").value = editingTask.date
+        document.getElementById("title").value = editingTask.title;
+        document.getElementById("description").value = editingTask.description;
+        document.getElementById("status").value = editingTask.status;
+        document.getElementById("date").value = editingTask.date;
     }
 
     form.addEventListener("submit", async (e) => {
-        e.preventDefault()
-        submitBtn.disabled = true
+        e.preventDefault();
+        submitBtn.disabled = true;
 
-        const title = document.getElementById("title").value.trim()
-        const description = document.getElementById("description").value.trim()
-        const status = document.getElementById("status").value
-        const date = document.getElementById("date").value
+        const title = document.getElementById("title").value.trim();
+        const description = document.getElementById("description").value.trim();
+        const status = document.getElementById("status").value;
+        const date = document.getElementById("date").value;
 
         if (!title || !description || !date) {
-            alert("Todos los campos son obligatorios")
-            submitBtn.disabled = false
-            return
+            alert("Todos los campos son obligatorios");
+            submitBtn.disabled = false;
+            return;
         }
 
-        const currentUser = JSON.parse(localStorage.getItem("currentUser"))
+        const currentUser = JSON.parse(localStorage.getItem("currentUser"));
+        if (!currentUser) return; // Control de seguridad adicional
 
         const taskData = {
             title,
@@ -94,20 +86,20 @@ export function setupTaskForm() {
             status,
             date,
             userId: currentUser.id
-        }
+        };
 
         try {
             if (editingTask) {
-                await updateTask(editingTask.id, taskData)
+                await updateTask(editingTask.id, taskData);
             } else {
-                await createTask(taskData)
+                await createTask(taskData);
             }
-            localStorage.removeItem("editingTask")
-            window.history.pushState({}, "", "/tasks")
-            renderRoute()
+            localStorage.removeItem("editingTask");
+            window.history.pushState({}, "", "/tasks");
+            renderRoute();
         } catch (error) {
-            console.error("Error al guardar tarea:", error)
-            submitBtn.disabled = false
+            console.error("Error al guardar tarea:", error);
+            submitBtn.disabled = false;
         }
-    })
+    });
 }

@@ -10,7 +10,7 @@ async function createUser(userData) {
         if (!response.ok) {
             throw new Error("Failed to create user");
         }  
-M    } catch (error) {
+       } catch (error) {
         console.error("Error creating user:", error);
         throw error;
     }

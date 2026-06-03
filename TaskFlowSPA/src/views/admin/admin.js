@@ -1,4 +1,4 @@
-import { obtainUsers } from '../../services/user.service.js'
+import { obtainUsers, changeUserRole, deleteUserFromServer, editUserFromServer } from '../../services/admin.service.js'
 import { getTasks } from '../../services/task.service.js'
 import { renderRoute } from '../../router/router.js'
 
@@ -6,11 +6,15 @@ export function renderAdmin() {
     return `<header class="border-b border-blue-100 bg-white/90 backdrop-blur">
       <div class="mx-auto flex max-w-7xl items-center justify-between px-6 py-4">
         <a class="text-xl font-black text-blue-900" href="/">TaskFlowSPA</a>
-        <nav class="hidden gap-3 md:flex">
+        <nav class="hidden gap-3 md:flex items-center">
           <a class="rounded-full px-4 py-2 text-sm font-semibold text-slate-600 hover:bg-blue-50 hover:text-blue-700" href="/dashboard">Dashboard</a>
           <a class="rounded-full px-4 py-2 text-sm font-semibold text-slate-600 hover:bg-blue-50 hover:text-blue-700" href="/tasks">Tareas</a>
           <a class="rounded-full px-4 py-2 text-sm font-semibold text-slate-600 hover:bg-blue-50 hover:text-blue-700" href="/profile">Perfil</a>
           <a class="rounded-full bg-blue-600 px-4 py-2 text-sm font-semibold text-white" href="/admin">Admin</a>
+          
+          <button id="btn-logout-admin" class="rounded-full px-4 py-2 text-sm font-semibold text-red-600 hover:bg-red-50 transition-colors">
+            Logout
+          </button>
         </nav>
       </div>
     </header>
@@ -26,44 +30,32 @@ export function renderAdmin() {
         <article class="rounded-3xl border border-blue-100 bg-white p-6 shadow-lg shadow-blue-50">
           <div class="flex items-center justify-between">
             <h2 class="text-xl font-bold text-slate-900">Usuarios</h2>
-            <span class="rounded-full bg-blue-100 px-3 py-1 text-xs font-semibold uppercase tracking-[0.25em] text-blue-700">Mockup</span>
+            <span class="rounded-full bg-blue-100 px-3 py-1 text-xs font-semibold uppercase tracking-[0.25em] text-blue-700">Panel Real</span>
           </div>
-          <div id="users-list" class="mt-5 space-y-4">
-            <div class="rounded-2xl bg-blue-50 p-4">
-              <div class="flex flex-col gap-3 md:flex-row md:items-center md:justify-between">
-                <div>
-                  <p class="font-bold text-slate-900">Ana Torres</p>
-                  <p class="text-sm text-slate-500">ana@taskflow.com</p>
-                </div>
-                <div class="flex gap-2">
-                  <span class="rounded-full bg-white px-3 py-1 text-xs font-bold text-blue-700">USER</span>
-                  <a class="rounded-full border border-blue-200 px-3 py-1 text-xs font-semibold text-blue-700 hover:bg-white" href="/admin">Editar rol</a>
-                </div>
-              </div>
-            </div>
-            <div class="rounded-2xl bg-blue-50 p-4">
-              <div class="flex flex-col gap-3 md:flex-row md:items-center md:justify-between">
-                <div>
-                  <p class="font-bold text-slate-900">Carlos Ruiz</p>
-                  <p class="text-sm text-slate-500">carlos@taskflow.com</p>
-                </div>
-                <div class="flex gap-2">
-                  <span class="rounded-full bg-white px-3 py-1 text-xs font-bold text-blue-700">ADMIN</span>
-                  <a class="rounded-full border border-blue-200 px-3 py-1 text-xs font-semibold text-blue-700 hover:bg-white" href="/admin">Editar rol</a>
-                </div>
-              </div>
-            </div>
-          </div>
+          <div id="users-list" class="mt-5 space-y-4"></div>
         </article>
       </section>
     </main>`
-    
 }
 
 export async function setupAdmin() {
+    // Escuchador del botón Logout (lo ponemos arriba para que funcione siempre, incluso si la API falla)
+    const logoutBtn = document.getElementById("btn-logout-admin");
+    if (logoutBtn) {
+        logoutBtn.addEventListener("click", (e) => {
+            e.preventDefault();
+            localStorage.clear(); // Borra 'user' y 'currentUser' por completo
+            window.history.pushState({}, "", "/login"); // Cambia la URL
+            renderRoute(); // Fuerza al enrutador a pintar el Login limpiamente
+        });
+    }
+
     const users = await obtainUsers()
     const tasks = await getTasks()
     const usersContainer = document.getElementById("users-list")
+
+    // Si por algún problema del guardián el contenedor no existe en el DOM, evitamos el crash
+    if (!usersContainer) return;
 
     const renderUsers = (userList) => {
         usersContainer.innerHTML = userList.map(user => `
@@ -75,9 +67,9 @@ export async function setupAdmin() {
                     </div>
                     <div class="flex gap-2 flex-wrap">
                         <span class="rounded-full bg-white px-3 py-1 text-xs font-bold text-blue-700">
-                            ${user.roles[0]}
+                            ${user.roles && user.roles[0] ? user.roles[0] : "USER"}
                         </span>
-                        <button data-id="${user.id}" data-role="${user.roles[0]}" class="role-btn rounded-full border border-blue-200 px-3 py-1 text-xs font-semibold text-blue-700 hover:bg-white">
+                        <button data-id="${user.id}" data-role="${user.roles && user.roles[0] ? user.roles[0] : "USER"}" class="role-btn rounded-full border border-blue-200 px-3 py-1 text-xs font-semibold text-blue-700 hover:bg-white">
                             Cambiar rol
                         </button>
                         <button data-id="${user.id}" data-name="${user.name ?? ""}" data-lastname="${user.lastname ?? ""}" class="edit-btn rounded-full border border-yellow-200 px-3 py-1 text-xs font-semibold text-yellow-700 hover:bg-yellow-50">
@@ -95,46 +87,38 @@ export async function setupAdmin() {
             </div>
         `).join("")
 
-        // cambiar rol
+        // --- Escuchadores de eventos para los botones de la lista ---
+
+        // Cambiar Rol
         usersContainer.querySelectorAll(".role-btn").forEach(btn => {
             btn.addEventListener("click", async () => {
-                const newRole = btn.dataset.role === "ADMIN" ? "USER" : "ADMIN"
-                await fetch(`http://localhost:3000/users/${btn.dataset.id}`, {
-                    method: "PATCH",
-                    headers: { "Content-Type": "application/json" },
-                    body: JSON.stringify({ roles: [newRole] })
-                })
-                renderRoute()
+                const ok = await changeUserRole(btn.dataset.id, btn.dataset.role)
+                if (ok) renderRoute()
             })
         })
 
-        // eliminar usuario
+        // Eliminar Usuario
         usersContainer.querySelectorAll(".delete-btn").forEach(btn => {
             btn.addEventListener("click", async () => {
                 if (!confirm("¿Eliminar este usuario?")) return
-                await fetch(`http://localhost:3000/users/${btn.dataset.id}`, {
-                    method: "DELETE"
-                })
-                renderRoute()
+                const ok = await deleteUserFromServer(btn.dataset.id)
+                if (ok) renderRoute()
             })
         })
 
-        // editar nombre
+        // Editar Usuario
         usersContainer.querySelectorAll(".edit-btn").forEach(btn => {
             btn.addEventListener("click", async () => {
                 const newName = prompt("Nuevo nombre:", btn.dataset.name)
                 const newLastname = prompt("Nuevo apellido:", btn.dataset.lastname)
                 if (!newName || !newLastname) return
-                await fetch(`http://localhost:3000/users/${btn.dataset.id}`, {
-                    method: "PATCH",
-                    headers: { "Content-Type": "application/json" },
-                    body: JSON.stringify({ name: newName, lastname: newLastname })
-                })
-                renderRoute()
+                
+                const ok = await editUserFromServer(btn.dataset.id, newName, newLastname)
+                if (ok) renderRoute()
             })
         })
 
-        // ver tareas del usuario
+        // Desplegar Tareas del Usuario
         usersContainer.querySelectorAll(".tasks-btn").forEach(btn => {
             btn.addEventListener("click", () => {
                 const container = document.getElementById(`tasks-${btn.dataset.id}`)
@@ -143,49 +127,45 @@ export async function setupAdmin() {
                 if (container.classList.contains("hidden")) {
                     container.classList.remove("hidden")
                     if (userTasks.length === 0) {
-                        container.innerHTML = `<p class="text-sm text-slate-400 mt-2">Sin tareas</p>`
+                        container.innerHTML = `<p class="text-sm text-slate-400 mt-2 pl-2">Este usuario no tiene tareas asignadas.</p>`
                     } else {
-                        // por esto
-container.innerHTML = userTasks.map(t => `
-    <div class="mt-2 rounded-xl bg-white p-3 text-sm flex items-center justify-between">
-        <div>
-            <p class="font-semibold text-slate-800">${t.title}</p>
-            <p class="text-slate-500">${t.status} · ${t.date}</p>
-        </div>
-        <div class="flex gap-2">
-            <button data-task-id="${t.id}" class="admin-edit-task rounded-full border border-yellow-200 px-3 py-1 text-xs font-semibold text-yellow-700 hover:bg-yellow-50">Editar</button>
-            <button data-task-id="${t.id}" class="admin-delete-task rounded-full border border-red-200 px-3 py-1 text-xs font-semibold text-red-600 hover:bg-red-50">Borrar</button>
-        </div>
-    </div>
-`).join("")
+                        container.innerHTML = userTasks.map(t => `
+                            <div class="mt-2 rounded-xl bg-white p-3 text-sm flex items-center justify-between shadow-sm">
+                                <div>
+                                    <p class="font-semibold text-slate-800">${t.title}</p>
+                                    <p class="text-xs text-slate-500">${t.status} · ${t.date ?? "Sin fecha"}</p>
+                                </div>
+                                <div class="flex gap-2">
+                                    <button data-task-id="${t.id}" class="admin-edit-task rounded-full border border-yellow-200 px-3 py-1 text-xs font-semibold text-yellow-700 hover:bg-yellow-50">Editar</button>
+                                    <button data-task-id="${t.id}" class="admin-delete-task rounded-full border border-red-200 px-3 py-1 text-xs font-semibold text-red-600 hover:bg-red-50">Borrar</button>
+                                </div>
+                            </div>
+                        `).join("")
 
-// editar tarea desde admin
-container.querySelectorAll(".admin-edit-task").forEach(btn => {
-    btn.addEventListener("click", () => {
-        const task = tasks.find(t => t.id === btn.dataset.taskId)
-        localStorage.setItem("editingTask", JSON.stringify(task))
-        window.history.pushState({}, "", "/task-form")
-        renderRoute()
-    })
-})
+                        container.querySelectorAll(".admin-edit-task").forEach(taskBtn => {
+                            taskBtn.addEventListener("click", () => {
+                                const task = tasks.find(t => t.id === taskBtn.dataset.taskId)
+                                localStorage.setItem("editingTask", JSON.stringify(task))
+                                window.history.pushState({}, "", "/task-form")
+                                renderRoute()
+                            })
+                        })
 
-// borrar tarea desde admin
-container.querySelectorAll(".admin-delete-task").forEach(btn => {
-    btn.addEventListener("click", async () => {
-        if (!confirm("¿Borrar esta tarea?")) return
-        await fetch(`http://localhost:3000/tasks/${btn.dataset.taskId}`, {
-            method: "DELETE"
-        })
-        renderRoute()
-    })
-})
+                        container.querySelectorAll(".admin-delete-task").forEach(taskBtn => {
+                            taskBtn.addEventListener("click", async () => {
+                                if (!confirm("¿Borrar esta tarea?")) return
+                                await fetch(`http://localhost:3000/tasks/${taskBtn.dataset.taskId}`, {
+                                    method: "DELETE"
+                                })
+                                renderRoute()
+                            })
+                        })
                     }
                 } else {
                     container.classList.add("hidden")
                 }
             })
         })
-        
     }
 
     renderUsers(users)

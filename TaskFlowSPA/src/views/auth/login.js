@@ -1,5 +1,5 @@
-import { obtainUsers } from "/src/services/user.service"
-import { renderRoute } from '../../router/router.js'
+import { loginUser } from "../../services/auth.service";
+import { renderRoute } from '../../router/router.js';
 
 export function renderLogin() {
   return `
@@ -27,8 +27,8 @@ export function renderLogin() {
               <input id="password" type="password" placeholder="Ingresa tu contrasena" class="w-full rounded-2xl border border-blue-100 bg-blue-50 px-4 py-3 text-slate-900 placeholder:text-slate-400 focus:border-blue-400 focus:outline-none" />
             </div>
             <button type="submit" class="inline-flex items-center justify-center rounded-2xl bg-blue-600 px-5 py-3 text-sm font-bold text-white hover:bg-blue-500">
-  Entrar al dashboard
-</button>
+              Entrar al dashboard
+            </button>
           </form>
         </div>
       </section>
@@ -45,44 +45,46 @@ export function renderLogin() {
         </div>
       </section>
     </main>
-    `
-
+  `;
 }
+
 export async function setupLogin() {
-  const form = document.getElementById("login-form")
+  const form = document.getElementById("login-form");
+  if (!form) return;
 
   form.addEventListener("submit", async (e) => {
-    e.preventDefault()
+    e.preventDefault();
 
-    const submitBtn = form.querySelector("button[type='submit']")
-    submitBtn.disabled = true
+    const submitBtn = form.querySelector("button[type='submit']");
+    submitBtn.disabled = true;
 
-    const email = document.getElementById("email").value.trim()
-    const password = document.getElementById("password").value.trim()
+    const email = document.getElementById("email").value.trim();
+    const password = document.getElementById("password").value.trim();
 
     if (!email || !password) {
-      alert("Por favor completa todos los campos")
-      submitBtn.disabled = false
-      return
+      alert("Por favor completa todos los campos");
+      submitBtn.disabled = false;
+      return;
     }
 
     try {
-      const users = await obtainUsers()
-      const userFound = users.find(
-        (u) => u.email === email && u.password === password
-      )
+      const userFound = await loginUser(email, password);
 
       if (userFound) {
-        localStorage.setItem("currentUser", JSON.stringify(userFound))
-        window.history.pushState({}, "", userFound.roles.includes("ADMIN") ? "/admin" : "/dashboard")
-        renderRoute()
+        // Garantiza que se guarde bajo la llave correcta unificada
+        localStorage.setItem("currentUser", JSON.stringify(userFound));
+
+        const esAdmin = userFound.roles && userFound.roles.includes("ADMIN");
+        window.history.pushState({}, "", esAdmin ? "/admin" : "/dashboard");
+        renderRoute();
       } else {
-        alert("Credenciales incorrectas")
-        submitBtn.disabled = false
+        alert("Credenciales incorrectas");
+        submitBtn.disabled = false;
       }
     } catch (error) {
-      console.error("Error en login:", error)
-      submitBtn.disabled = false
+      console.error("Error en flujo de login de la vista:", error);
+      alert("Ocurrió un error al procesar la solicitud.");
+      submitBtn.disabled = false;
     }
-  })
+  });
 }

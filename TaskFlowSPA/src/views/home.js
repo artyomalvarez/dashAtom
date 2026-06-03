@@ -1,15 +1,10 @@
+
+// Solo un "../" porque home.js está directamente en src/views/
+import { renderNavbar, setupNavbar } from '../components/organisms/Navbar.js';
+
 export function renderHome(params) {
     return `
-    <header class="border-b border-blue-100 bg-white/90 backdrop-blur">
-      <div class="mx-auto flex max-w-6xl items-center justify-between px-6 py-4">
-        <a class="text-xl font-black tracking-tight text-blue-900" href="/">TaskFlowSPA</a>
-        <nav class="hidden items-center gap-3 md:flex">
-          <a class="rounded-full px-4 py-2 text-sm font-semibold text-slate-600 hover:bg-blue-50 hover:text-blue-700" href="/">Home</a>
-          <a class="rounded-full px-4 py-2 text-sm font-semibold text-slate-600 hover:bg-blue-50 hover:text-blue-700" href="/login">Login</a>
-          <a class="rounded-full bg-blue-600 px-4 py-2 text-sm font-semibold text-white hover:bg-blue-500" href="/register">Registrarse</a>
-        </nav>
-      </div>
-    </header>
+    ${renderNavbar()}
 
     <main class="mx-auto max-w-6xl px-6 py-14">
       <section class="grid gap-10 lg:grid-cols-[1.15fr_0.85fr] lg:items-center">
@@ -20,10 +15,10 @@ export function renderHome(params) {
           </h1>
           <p class="mt-5 max-w-2xl text-lg leading-8 text-slate-600">
             TaskFlowSPA presenta el recorrido principal del proyecto con una interfaz uniforme, amable y lista para convertirse
-            luego en una SPA real con autenticacion, roles, permisos y CRUD de tareas.
+            luego en una SPA real con autenticación, roles, permisos y CRUD de tareas.
           </p>
           <div class="mt-8 flex flex-col gap-3 sm:flex-row">
-            <a class="inline-flex items-center justify-center rounded-2xl bg-blue-600 px-6 py-3 text-sm font-bold text-white shadow-lg shadow-blue-200 hover:bg-blue-500" href="/login">Iniciar sesion</a>
+            <a class="inline-flex items-center justify-center rounded-2xl bg-blue-600 px-6 py-3 text-sm font-bold text-white shadow-lg shadow-blue-200 hover:bg-blue-500" href="/login">Iniciar sesión</a>
             <a class="inline-flex items-center justify-center rounded-2xl border border-blue-200 bg-white px-6 py-3 text-sm font-bold text-blue-700 hover:bg-blue-50" href="/register">Crear cuenta</a>
           </div>
         </div>
@@ -31,26 +26,30 @@ export function renderHome(params) {
         <section class="rounded-4xl border border-blue-100 bg-white p-8 shadow-xl shadow-blue-100/70">
           <h2 class="text-2xl font-bold text-slate-900">Vistas del proyecto</h2>
           <div class="mt-6 grid gap-4 sm:grid-cols-2">
-            <a class="rounded-3xl bg-sky-50 p-5 hover:bg-sky-100" href=/dashboard">
+            <a class="rounded-3xl bg-sky-50 p-5 hover:bg-sky-100" href="/dashboard">
               <p class="text-sm font-semibold text-blue-600">Dashboard</p>
               <p class="mt-2 text-sm text-slate-600">Resumen principal de productividad.</p>
             </a>
-            <a class="rounded-3xl bg-sky-50 p-5 hover:bg-sky-100" href=/tasks">
+            <a class="rounded-3xl bg-sky-50 p-5 hover:bg-sky-100" href="/tasks">
               <p class="text-sm font-semibold text-blue-600">Mis tareas</p>
               <p class="mt-2 text-sm text-slate-600">CRUD principal del usuario.</p>
             </a>
-            <a class="rounded-3xl bg-sky-50 p-5 hover:bg-sky-100" href=/profile">
+            <a class="rounded-3xl bg-sky-50 p-5 hover:bg-sky-100" href="/profile">
               <p class="text-sm font-semibold text-blue-600">Mi perfil</p>
               <p class="mt-2 text-sm text-slate-600">Actualizar cuenta y datos personales.</p>
             </a>
-            <a class="rounded-3xl bg-sky-50 p-5 hover:bg-sky-100" href=/admin">
+            <a class="rounded-3xl bg-sky-50 p-5 hover:bg-sky-100" href="/admin">
               <p class="text-sm font-semibold text-blue-600">Admin</p>
-              <p class="mt-2 text-sm text-slate-600">Gestion de usuarios y roles.</p>
+              <p class="mt-2 text-sm text-slate-600">Gestión de usuarios y roles.</p>
             </a>
           </div>
         </section>
       </section>
     </main>
-`
+    `;
+}
 
+// Agregamos el setup para activar los eventos del Navbar (como el redireccionamiento por pushState)
+export function setupHome() {
+    setupNavbar();
 }

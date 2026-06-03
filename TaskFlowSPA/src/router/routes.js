@@ -1,26 +1,29 @@
-import { renderHome } from "../views/home" 
-import { rederRegister, setupRegister } from "../views/auth/resgister"
+// 1. Importaciones de las vistas
+// Agregamos setupHome para que funcione el Navbar en el Home
+import { renderHome, setupHome } from "../views/home"; 
+import { renderRegister, setupRegister } from "../views/auth/resgister"; // Corregido 'renderRegister'
 import { renderLogin, setupLogin } from "../views/auth/login";
-import {renderAdmin, setupAdmin} from "../views/admin/admin"
-import { renderNotFound } from "../views/not-found"
-import { renderDashboard } from "../views/app/dashboard"
-import { renderProfile, setupProfile } from "../views/admin/profile"
-import { renderTaskForm, setupTaskForm } from "../views/tasks/task-form"
-import { renderTask, setupTask } from "../views/tasks/task"
+import { renderAdmin, setupAdmin } from "../views/admin/admin";
+import { renderNotFound } from "../views/not-found";
+import { renderDashboard, setupDashboard } from "../views/app/dashboard";
+import { renderProfile, setupProfile } from "../views/admin/profile";
+import { renderTaskForm, setupTaskForm } from "../views/tasks/task-form";
+import { renderTask, setupTask } from "../views/tasks/task";
 
 export const routes = {
     "/": {
         render: renderHome,
+        setup: setupHome, // ¡Listo! Ahora el Navbar cobrará vida en el Home
         isAutorized: false,
     },
     "/login": {
         render: renderLogin,
-        setup : setupLogin,
+        setup: setupLogin,
         isAutorized: false,
     },
     "/register": {
-        render: rederRegister,
-        setup : setupRegister,
+        render: renderRegister, // Corregido con su 'n'
+        setup: setupRegister,
         isAutorized: false,
     },
     "/admin": {
@@ -30,6 +33,7 @@ export const routes = {
     },
     "/dashboard": {
         render: renderDashboard,
+        setup: setupDashboard,
         isAutorized: true,
     },
     "/profile": {
@@ -44,11 +48,9 @@ export const routes = {
     },
     "/task-form": {
         render: renderTaskForm,
-        setup:setupTaskForm,
+        setup: setupTaskForm,
         isAutorized: true,
     },
-
 }
 
-
-export const notfound = renderNotFound()
+export const notfound = renderNotFound();

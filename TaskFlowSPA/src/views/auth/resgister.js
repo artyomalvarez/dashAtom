@@ -1,7 +1,7 @@
 import { buttonSubmit } from "../../components/atoms/registerButton.js"
 import { createUser, obtainUsers } from '../../services/user.service.js'
 import { renderRoute } from '../../router/router.js'
-export function rederRegister(params) {
+export function renderRegister(params) {
   return `    
     <main class="grid min-h-screen lg:grid-cols-[0.95fr_1.05fr]">
       <section class="hidden border-r border-blue-100 bg-blue-600 p-10 text-white lg:flex lg:flex-col lg:justify-between">
