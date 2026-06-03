@@ -1,7 +1,8 @@
-import {obtainUsers} from "/src/services/user.service"
+import { obtainUsers } from "/src/services/user.service"
+import { renderRoute } from '../../router/router.js'
 
 export function renderLogin() {
-    return `
+  return `
     <main class="grid min-h-screen lg:grid-cols-[1fr_0.95fr]">
       <section class="flex items-center justify-center px-6 py-10">
         <div class="w-full max-w-xl rounded-4xl border border-blue-100 bg-white p-8 shadow-xl shadow-blue-100/70">
@@ -16,7 +17,7 @@ export function renderLogin() {
             <p class="mt-4 text-slate-600">Ingresa a tu espacio de trabajo y continua organizando tus tareas.</p>
           </div>
 
-          <form class="mt-8 grid gap-5">
+          <form id="login-form" class="mt-8 grid gap-5">
             <div>
               <label class="mb-2 block text-sm font-medium text-slate-700" for="email">Correo</label>
               <input id="email" type="email" placeholder="usuario@taskflow.com" class="w-full rounded-2xl border border-blue-100 bg-blue-50 px-4 py-3 text-slate-900 placeholder:text-slate-400 focus:border-blue-400 focus:outline-none" />
@@ -25,9 +26,9 @@ export function renderLogin() {
               <label class="mb-2 block text-sm font-medium text-slate-700" for="password">Contrasena</label>
               <input id="password" type="password" placeholder="Ingresa tu contrasena" class="w-full rounded-2xl border border-blue-100 bg-blue-50 px-4 py-3 text-slate-900 placeholder:text-slate-400 focus:border-blue-400 focus:outline-none" />
             </div>
-            <a class="inline-flex items-center justify-center rounded-2xl bg-blue-600 px-5 py-3 text-sm font-bold text-white hover:bg-blue-500" href="/dashboard">
-              Entrar al dashboard
-            </a>
+            <button type="submit" class="inline-flex items-center justify-center rounded-2xl bg-blue-600 px-5 py-3 text-sm font-bold text-white hover:bg-blue-500">
+  Entrar al dashboard
+</button>
           </form>
         </div>
       </section>
@@ -45,7 +46,7 @@ export function renderLogin() {
       </section>
     </main>
     `
-    
+
 }
 export async function setupLogin() {
   const form = document.getElementById("login-form")
@@ -83,4 +84,5 @@ export async function setupLogin() {
       console.error("Error en login:", error)
       submitBtn.disabled = false
     }
-  })}
+  })
+}

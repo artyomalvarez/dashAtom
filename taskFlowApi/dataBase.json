@@ -61,7 +61,7 @@
     {
       "name": "pero",
       "lastname": "torrez",
-      "email": "perrotorres@gmail.com",
+      "email": "perrotorres@hotmail.com",
       "password": "123456",
       "roles": [
         "ADMIN"
@@ -69,6 +69,23 @@
       "id": "lmmIxgSU5KA"
     }
   ],
-  "tasks": [],
+  "tasks": [
+    {
+      "title": "tara",
+      "description": "atataaata",
+      "status": "Pendiente",
+      "date": "2026-06-01",
+      "userId": "Fprp5tAtxEo",
+      "id": "YDe-jhXmuIc"
+    },
+    {
+      "title": "knnjknknonm",
+      "description": "lmlpmkpokpoopopo",
+      "status": "Completada",
+      "date": "2000-12-12",
+      "userId": "lmmIxgSU5KA",
+      "id": "2zW41WkQ2PU"
+    }
+  ],
   "$schema": "./node_modules/json-server/schema.json"
 }

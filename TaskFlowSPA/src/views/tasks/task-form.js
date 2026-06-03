@@ -1,5 +1,10 @@
+import { createTask, updateTask, getTasks } from '../../services/task.service.js'
+import { renderRoute } from '../../router/router.js'
+
+
+
 export function renderTaskForm() {
-    return`    <header class="border-b border-blue-100 bg-white/90 backdrop-blur">
+    return`<header class="border-b border-blue-100 bg-white/90 backdrop-blur">
       <div class="mx-auto flex max-w-5xl items-center justify-between px-6 py-4">
         <a class="text-xl font-black text-blue-900" href="/">TaskFlowSPA</a>
         <nav class="hidden gap-3 md:flex">
@@ -16,7 +21,7 @@ export function renderTaskForm() {
         <h1 class="mt-3 text-4xl font-black tracking-tight text-slate-900">Crear o editar tarea</h1>
         <p class="mt-4 max-w-2xl text-slate-600">Vista base para registrar una tarea nueva o actualizar una existente.</p>
 
-        <form class="mt-8 grid gap-5">
+        <form id="task-form" class="mt-8 grid gap-5">
           <div>
             <label class="mb-2 block text-sm font-medium text-slate-700" for="title">Titulo</label>
             <input id="title" type="text" placeholder="Ej. Preparar proyecto final" class="w-full rounded-2xl border border-blue-100 bg-blue-50 px-4 py-3 text-slate-900 placeholder:text-slate-400 focus:border-blue-400 focus:outline-none" />
@@ -43,11 +48,66 @@ export function renderTaskForm() {
           </div>
 
           <div class="flex flex-col gap-3 pt-2 sm:flex-row">
-            <a class="inline-flex items-center justify-center rounded-2xl bg-blue-600 px-5 py-3 text-sm font-bold text-white hover:bg-blue-500" href="/tasks">Guardar tarea</a>
+            <button type="submit" id="task-submit" class="inline-flex items-center justify-center rounded-2xl bg-blue-600 px-5 py-3 text-sm font-bold text-white hover:bg-blue-500">Guardar tarea</button>
             <a class="inline-flex items-center justify-center rounded-2xl border border-blue-200 bg-white px-5 py-3 text-sm font-bold text-blue-700 hover:bg-blue-50" href="/tasks">Cancelar</a>
           </div>
         </form>
       </section>
     </main>`
     
+}
+
+export function setupTaskForm() {
+    const form = document.getElementById("task-form")
+    const submitBtn = document.getElementById("task-submit")
+
+    // detecta si es edicion — guarda el id en localStorage al editar
+    const editingTask = JSON.parse(localStorage.getItem("editingTask") || "null")
+
+    if (editingTask) {
+        document.getElementById("title").value = editingTask.title
+        document.getElementById("description").value = editingTask.description
+        document.getElementById("status").value = editingTask.status
+        document.getElementById("date").value = editingTask.date
+    }
+
+    form.addEventListener("submit", async (e) => {
+        e.preventDefault()
+        submitBtn.disabled = true
+
+        const title = document.getElementById("title").value.trim()
+        const description = document.getElementById("description").value.trim()
+        const status = document.getElementById("status").value
+        const date = document.getElementById("date").value
+
+        if (!title || !description || !date) {
+            alert("Todos los campos son obligatorios")
+            submitBtn.disabled = false
+            return
+        }
+
+        const currentUser = JSON.parse(localStorage.getItem("currentUser"))
+
+        const taskData = {
+            title,
+            description,
+            status,
+            date,
+            userId: currentUser.id
+        }
+
+        try {
+            if (editingTask) {
+                await updateTask(editingTask.id, taskData)
+            } else {
+                await createTask(taskData)
+            }
+            localStorage.removeItem("editingTask")
+            window.history.pushState({}, "", "/tasks")
+            renderRoute()
+        } catch (error) {
+            console.error("Error al guardar tarea:", error)
+            submitBtn.disabled = false
+        }
+    })
 }

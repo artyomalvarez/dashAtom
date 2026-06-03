@@ -1,3 +1,8 @@
+import { getTasks, deleteTask } from '../../services/task.service.js'
+import { renderRoute } from '../../router/router.js'
+
+
+
 export function renderTask() {
     return `    <header class="border-b border-blue-100 bg-white/90 backdrop-blur">
       <div class="mx-auto flex max-w-6xl items-center justify-between px-6 py-4">
@@ -23,7 +28,7 @@ export function renderTask() {
         </a>
       </section>
 
-      <section class="mt-8 grid gap-4">
+      <section id="tasks-list" class="mt-8 grid gap-4">
         <article class="rounded-3xl border border-blue-100 bg-white p-6 shadow-lg shadow-blue-50">
           <div class="flex flex-col gap-4 md:flex-row md:items-start md:justify-between">
             <div>
@@ -54,4 +59,57 @@ export function renderTask() {
       </section>
     </main>`
     
+}
+
+
+
+export async function setupTask() {
+    const currentUser = JSON.parse(localStorage.getItem("currentUser"))
+    const tasks = await getTasks()
+
+    // filtra solo las tareas del usuario logueado
+    const userTasks = tasks.filter(t => t.userId === currentUser.id)
+
+    const section = document.getElementById("tasks-list")
+    
+    if (userTasks.length === 0) {
+        section.innerHTML = `<p class="text-slate-500 text-center py-10">No tienes tareas aún. ¡Crea una!</p>`
+        return
+    }
+
+    section.innerHTML = userTasks.map(task => `
+        <article class="rounded-3xl border border-blue-100 bg-white p-6 shadow-lg shadow-blue-50">
+            <div class="flex flex-col gap-4 md:flex-row md:items-start md:justify-between">
+                <div>
+                    <p class="text-xs font-bold uppercase tracking-[0.25em] text-blue-600">${task.status}</p>
+                    <h2 class="mt-2 text-2xl font-bold text-slate-900">${task.title}</h2>
+                    <p class="mt-3 max-w-2xl text-slate-600">${task.description}</p>
+                    <p class="mt-2 text-xs text-slate-400">Fecha límite: ${task.date}</p>
+                </div>
+                <div class="flex gap-3">
+                    <button data-id="${task.id}" class="edit-btn rounded-full border border-blue-200 px-4 py-2 text-sm font-semibold text-blue-700 hover:bg-blue-50">Editar</button>
+                    <button data-id="${task.id}" class="delete-btn rounded-full border border-red-200 px-4 py-2 text-sm font-semibold text-red-600 hover:bg-red-50">Eliminar</button>
+                </div>
+            </div>
+        </article>
+    `).join("")
+
+    // logica eliminar
+    section.querySelectorAll(".delete-btn").forEach(btn => {
+        btn.addEventListener("click", async () => {
+            if (!confirm("¿Eliminar esta tarea?")) return
+            await deleteTask(btn.dataset.id)
+            renderRoute()
+        })
+    })
+
+    // logica editar
+    section.querySelectorAll(".edit-btn").forEach(btn => {
+        btn.addEventListener("click", () => {
+            const task = userTasks.find(t => t.id === btn.dataset.id)
+            localStorage.setItem("editingTask", JSON.stringify(task))
+            window.history.pushState({}, "", "/task-form")
+            renderRoute()
+        })
+    })
 }

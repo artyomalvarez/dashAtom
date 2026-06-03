@@ -4,9 +4,9 @@ import { renderLogin, setupLogin } from "../views/auth/login";
 import {renderAdmin} from "../views/admin/admin"
 import { renderNotFound } from "../views/not-found"
 import { renderDashboard } from "../views/app/dashboard"
-import { renderProfile } from "../views/admin/profile"
-import { renderTaskForm } from "../views/tasks/task-form"
-import { renderTask } from "../views/tasks/task"
+import { renderProfile, setupProfile } from "../views/admin/profile"
+import { renderTaskForm, setupTaskForm } from "../views/tasks/task-form"
+import { renderTask, setupTask } from "../views/tasks/task"
 
 export const routes = {
     "/": {
@@ -33,14 +33,17 @@ export const routes = {
     },
     "/profile": {
         render: renderProfile,
+        setup: setupProfile,
         isAutorized: true,
     },
     "/tasks": {
         render: renderTask,
+        setup: setupTask,
         isAutorized: true,
     },
     "/task-form": {
         render: renderTaskForm,
+        setup:setupTaskForm,
         isAutorized: true,
     },
 
