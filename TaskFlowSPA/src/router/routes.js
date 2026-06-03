@@ -1,7 +1,7 @@
 import { renderHome } from "../views/home" 
 import { rederRegister, setupRegister } from "../views/auth/resgister"
 import { renderLogin, setupLogin } from "../views/auth/login";
-import {renderAdmin} from "../views/admin/admin"
+import {renderAdmin, setupAdmin} from "../views/admin/admin"
 import { renderNotFound } from "../views/not-found"
 import { renderDashboard } from "../views/app/dashboard"
 import { renderProfile, setupProfile } from "../views/admin/profile"
@@ -25,6 +25,7 @@ export const routes = {
     },
     "/admin": {
         render: renderAdmin,
+        setup: setupAdmin,
         isAutorized: true,
     },
     "/dashboard": {

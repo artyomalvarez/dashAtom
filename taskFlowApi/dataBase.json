@@ -1,16 +1,6 @@
 {
   "users": [
     {
-      "name": "",
-      "lastname": "",
-      "email": "",
-      "password": "",
-      "roles": [
-        "USER"
-      ],
-      "id": "14DIsz2zTUA"
-    },
-    {
       "name": "pepito perez",
       "lastname": "perez",
       "email": "perez@gmail.com",
@@ -31,30 +21,12 @@
       "id": "uDkt1I44owc"
     },
     {
-      "lastname": "congo ",
-      "email": "arlavarado@congo.congo",
-      "password": "122313",
-      "roles": [
-        "USER"
-      ],
-      "id": "Kkm3fyGICH0"
-    },
-    {
-      "lastname": "congo ",
-      "email": "arlavarado@congo.congo",
-      "password": "122313",
-      "roles": [
-        "USER"
-      ],
-      "id": "vSElZVlWbMg"
-    },
-    {
       "name": "jorgita",
       "lastname": "congo",
       "email": "arara@gmail.com",
       "password": "345563",
       "roles": [
-        "USER"
+        "ADMIN"
       ],
       "id": "B4Kqeb1aUSQ"
     },
@@ -71,20 +43,12 @@
   ],
   "tasks": [
     {
-      "title": "tara",
+      "title": "perroro",
       "description": "atataaata",
       "status": "Pendiente",
       "date": "2026-06-01",
-      "userId": "Fprp5tAtxEo",
-      "id": "YDe-jhXmuIc"
-    },
-    {
-      "title": "knnjknknonm",
-      "description": "lmlpmkpokpoopopo",
-      "status": "Completada",
-      "date": "2000-12-12",
       "userId": "lmmIxgSU5KA",
-      "id": "2zW41WkQ2PU"
+      "id": "YDe-jhXmuIc"
     }
   ],
   "$schema": "./node_modules/json-server/schema.json"
