@@ -1,12 +1,12 @@
 {
   "users": [
     {
-      "name": "pepito perez",
-      "lastname": "perez",
+      "name": "peppa",
+      "lastname": "ara",
       "email": "perez@gmail.com",
       "password": "perezprerezperez",
       "roles": [
-        "ADMIN"
+        "USER"
       ],
       "id": "Fprp5tAtxEo"
     },
@@ -39,6 +39,16 @@
         "ADMIN"
       ],
       "id": "lmmIxgSU5KA"
+    },
+    {
+      "name": "juan",
+      "lastname": "jose",
+      "email": "juanjose@hotmail.com",
+      "password": "123",
+      "roles": [
+        "USER"
+      ],
+      "id": "ZZbWiMKc3IM"
     }
   ],
   "tasks": [
@@ -49,6 +59,22 @@
       "date": "2026-06-01",
       "userId": "lmmIxgSU5KA",
       "id": "YDe-jhXmuIc"
+    },
+    {
+      "title": "perro hasme esto",
+      "description": "esto es una tarea importtantes",
+      "status": "Pendiente",
+      "date": "2026-06-27",
+      "userId": "lmmIxgSU5KA",
+      "id": "aXY5P9i3cA4"
+    },
+    {
+      "title": "oye que hay",
+      "description": "djcbskcbslc",
+      "status": "Completada",
+      "date": "2026-06-30",
+      "userId": "lmmIxgSU5KA",
+      "id": "JL4kyJqDm_U"
     }
   ],
   "$schema": "./node_modules/json-server/schema.json"
