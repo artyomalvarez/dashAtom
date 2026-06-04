@@ -6,7 +6,7 @@ export async function loginUser(email, password) {
     const userFound = users.find(u => u.email === email && u.password === password);
 
     if (userFound) {
-        localStorage.setItem("user", JSON.stringify(userFound));
+        localStorage.setItem("currentUser", JSON.stringify(userFound))
         return userFound;
     }
     
@@ -15,5 +15,5 @@ export async function loginUser(email, password) {
 
 // Borra la sesion del localStorage
 export function logoutUser() {
-    localStorage.removeItem("user");
+    localStorage.removeItem("currentUser")
 }
