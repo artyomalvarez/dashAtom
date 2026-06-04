@@ -11,7 +11,12 @@ export function renderRoute() {
     if (!app) return;
 
     const currentPath = window.location.pathname;
+    console.log(currentPath);
+    
+    
     const route = routes[currentPath];
+    console.log(route);
+    
 
     if (!route) {
         app.innerHTML = notfound;

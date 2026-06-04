@@ -39,14 +39,14 @@ export function renderAdmin() {
 }
 
 export async function setupAdmin() {
-    // Escuchador del botón Logout (lo ponemos arriba para que funcione siempre, incluso si la API falla)
+    // Escuchador del botón Logout
     const logoutBtn = document.getElementById("btn-logout-admin");
     if (logoutBtn) {
         logoutBtn.addEventListener("click", (e) => {
             e.preventDefault();
-            localStorage.clear(); // Borra 'user' y 'currentUser' por completo
-            window.history.pushState({}, "", "/login"); // Cambia la URL
-            renderRoute(); // Fuerza al enrutador a pintar el Login limpiamente
+            localStorage.clear(); 
+            window.history.pushState({}, "", "/login"); 
+            renderRoute(); 
         });
     }
 
@@ -54,7 +54,6 @@ export async function setupAdmin() {
     const tasks = await getTasks()
     const usersContainer = document.getElementById("users-list")
 
-    // Si por algún problema del guardián el contenedor no existe en el DOM, evitamos el crash
     if (!usersContainer) return;
 
     const renderUsers = (userList) => {
@@ -118,7 +117,7 @@ export async function setupAdmin() {
             })
         })
 
-        // Desplegar Tareas del Usuario
+        // Desplegar Tareas del Usuario (Opción 2 Integrada)
         usersContainer.querySelectorAll(".tasks-btn").forEach(btn => {
             btn.addEventListener("click", () => {
                 const container = document.getElementById(`tasks-${btn.dataset.id}`)
@@ -126,22 +125,39 @@ export async function setupAdmin() {
 
                 if (container.classList.contains("hidden")) {
                     container.classList.remove("hidden")
+                    
                     if (userTasks.length === 0) {
-                        container.innerHTML = `<p class="text-sm text-slate-400 mt-2 pl-2">Este usuario no tiene tareas asignadas.</p>`
+                        // Si no tiene tareas, mostramos el aviso y el boton para añadir una nueva
+                        container.innerHTML = `
+                            <div class="mt-2 flex items-center justify-between pl-2 bg-white rounded-xl p-3 shadow-sm">
+                                <p class="text-sm text-slate-400">Este usuario no tiene tareas asignadas.</p>
+                                <button data-id="${btn.dataset.id}" class="add-task-btn rounded-full bg-blue-600 px-3 py-1 text-xs font-bold text-white hover:bg-blue-700 transition-colors">
+                                    + Añadir tarea
+                                </button>
+                            </div>`;
                     } else {
-                        container.innerHTML = userTasks.map(t => `
-                            <div class="mt-2 rounded-xl bg-white p-3 text-sm flex items-center justify-between shadow-sm">
-                                <div>
-                                    <p class="font-semibold text-slate-800">${t.title}</p>
-                                    <p class="text-xs text-slate-500">${t.status} · ${t.date ?? "Sin fecha"}</p>
-                                </div>
-                                <div class="flex gap-2">
-                                    <button data-task-id="${t.id}" class="admin-edit-task rounded-full border border-yellow-200 px-3 py-1 text-xs font-semibold text-yellow-700 hover:bg-yellow-50">Editar</button>
-                                    <button data-task-id="${t.id}" class="admin-delete-task rounded-full border border-red-200 px-3 py-1 text-xs font-semibold text-red-600 hover:bg-red-50">Borrar</button>
-                                </div>
+                        // Si tiene tareas, ponemos el boton de añadir arriba y luego la lista
+                        container.innerHTML = `
+                            <div class="mt-2 flex justify-end mb-2">
+                                <button data-id="${btn.dataset.id}" class="add-task-btn rounded-full bg-blue-600 px-3 py-1 text-xs font-bold text-white hover:bg-blue-700 transition-colors">
+                                    + Añadir tarea
+                                </button>
                             </div>
-                        `).join("")
+                            ${userTasks.map(t => `
+                                <div class="mt-2 rounded-xl bg-white p-3 text-sm flex items-center justify-between shadow-sm">
+                                    <div>
+                                        <p class="font-semibold text-slate-800">${t.title}</p>
+                                        <p class="text-xs text-slate-500">${t.status} · ${t.date ?? "Sin fecha"}</p>
+                                    </div>
+                                    <div class="flex gap-2">
+                                        <button data-task-id="${t.id}" class="admin-edit-task rounded-full border border-yellow-200 px-3 py-1 text-xs font-semibold text-yellow-700 hover:bg-yellow-50">Editar</button>
+                                        <button data-task-id="${t.id}" class="admin-delete-task rounded-full border border-red-200 px-3 py-1 text-xs font-semibold text-red-600 hover:bg-red-50">Borrar</button>
+                                    </div>
+                                </div>
+                            `).join("")}
+                        `;
 
+                        // Escuchadores internos para editar y borrar tareas existentes
                         container.querySelectorAll(".admin-edit-task").forEach(taskBtn => {
                             taskBtn.addEventListener("click", () => {
                                 const task = tasks.find(t => t.id === taskBtn.dataset.taskId)
@@ -161,6 +177,18 @@ export async function setupAdmin() {
                             })
                         })
                     }
+
+                    // Escuchador del nuevo boton "+ Añadir tarea" (Funciona tanto si hay tareas como si esta vacio)
+                    const addTaskBtn = container.querySelector(".add-task-btn");
+                    if (addTaskBtn) {
+                        addTaskBtn.addEventListener("click", () => {
+                            localStorage.removeItem("editingTask"); // Limpia edicion previa
+                            localStorage.setItem("assignToUserId", addTaskBtn.dataset.id); // Guarda el ID del usuario elegido
+                            window.history.pushState({}, "", "/task-form"); // Redirecciona
+                            renderRoute();
+                        });
+                    }
+
                 } else {
                     container.classList.add("hidden")
                 }

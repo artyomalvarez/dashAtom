@@ -1,8 +1,8 @@
 {
   "users": [
     {
-      "name": "peppa",
-      "lastname": "ara",
+      "name": "pepe",
+      "lastname": "pepe",
       "email": "perez@gmail.com",
       "password": "perezprerezperez",
       "roles": [
@@ -16,7 +16,7 @@
       "email": "aaaa@perdon",
       "password": "12345678",
       "roles": [
-        "ADMIN"
+        "USER"
       ],
       "id": "uDkt1I44owc"
     },
@@ -26,19 +26,9 @@
       "email": "arara@gmail.com",
       "password": "345563",
       "roles": [
-        "ADMIN"
+        "USER"
       ],
       "id": "B4Kqeb1aUSQ"
-    },
-    {
-      "name": "pero",
-      "lastname": "torrez",
-      "email": "perrotorres@hotmail.com",
-      "password": "123456",
-      "roles": [
-        "ADMIN"
-      ],
-      "id": "lmmIxgSU5KA"
     },
     {
       "name": "juan",
@@ -49,6 +39,16 @@
         "USER"
       ],
       "id": "ZZbWiMKc3IM"
+    },
+    {
+      "name": "ana",
+      "lastname": "torres",
+      "email": "soyadmin@gmail.com",
+      "password": "1234",
+      "roles": [
+        "ADMIN"
+      ],
+      "id": "nU6ng4Wonno"
     }
   ],
   "tasks": [
@@ -57,7 +57,7 @@
       "description": "atataaata",
       "status": "Pendiente",
       "date": "2026-06-01",
-      "userId": "lmmIxgSU5KA",
+      "userId": null,
       "id": "YDe-jhXmuIc"
     },
     {
@@ -65,7 +65,7 @@
       "description": "esto es una tarea importtantes",
       "status": "Pendiente",
       "date": "2026-06-27",
-      "userId": "lmmIxgSU5KA",
+      "userId": null,
       "id": "aXY5P9i3cA4"
     },
     {
@@ -73,8 +73,56 @@
       "description": "djcbskcbslc",
       "status": "Completada",
       "date": "2026-06-30",
-      "userId": "lmmIxgSU5KA",
+      "userId": null,
       "id": "JL4kyJqDm_U"
+    },
+    {
+      "title": "crear crud",
+      "description": "crear crud con react",
+      "status": "Pendiente",
+      "date": "2026-04-15",
+      "userId": "nU6ng4Wonno",
+      "id": "wY-XScGi_9U"
+    },
+    {
+      "title": "srfwegweet",
+      "description": "rrtrtetyeryeyr",
+      "status": "Pendiente",
+      "date": "2026-06-24",
+      "userId": "uDkt1I44owc",
+      "id": "9V1FnU-8B2U"
+    },
+    {
+      "title": "asereje",
+      "description": "dadaddad",
+      "status": "Pendiente",
+      "date": "2026-06-22",
+      "userId": "nU6ng4Wonno",
+      "id": "R1__koqs2Yk"
+    },
+    {
+      "title": "arese",
+      "description": "dadada",
+      "status": "En progreso",
+      "date": "2026-06-15",
+      "userId": "nU6ng4Wonno",
+      "id": "1MBa7tRqSdQ"
+    },
+    {
+      "title": "perro hasme esto",
+      "description": "dadada",
+      "status": "En progreso",
+      "date": "2026-06-09",
+      "userId": "nU6ng4Wonno",
+      "id": "IdTigiXccQQ"
+    },
+    {
+      "title": "pepepep",
+      "description": "la tarea de pepe",
+      "status": "Pendiente",
+      "date": "2026-06-18",
+      "userId": "Fprp5tAtxEo",
+      "id": "p8J2wcttb6A"
     }
   ],
   "$schema": "./node_modules/json-server/schema.json"

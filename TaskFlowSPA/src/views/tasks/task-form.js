@@ -39,7 +39,7 @@ export function renderTaskForm() {
 
           <div class="flex flex-col gap-3 pt-2 sm:flex-row">
             <button type="submit" id="task-submit" class="inline-flex items-center justify-center rounded-2xl bg-blue-600 px-5 py-3 text-sm font-bold text-white hover:bg-blue-500">Guardar tarea</button>
-            <a class="inline-flex items-center justify-center rounded-2xl border border-blue-200 bg-white px-5 py-3 text-sm font-bold text-blue-700 hover:bg-blue-50" href="/tasks">Cancelar</a>
+            <button type="button" id="task-cancel" class="inline-flex items-center justify-center rounded-2xl border border-blue-200 bg-white px-5 py-3 text-sm font-bold text-blue-700 hover:bg-blue-50">Cancelar</button>
           </div>
         </form>
       </section>
@@ -51,15 +51,33 @@ export function setupTaskForm() {
 
     const form = document.getElementById("task-form");
     const submitBtn = document.getElementById("task-submit");
+    const cancelBtn = document.getElementById("task-cancel");
     if (!form) return;
 
     const editingTask = JSON.parse(localStorage.getItem("editingTask") || "null");
+    const adminAssignId = localStorage.getItem("assignToUserId");
 
     if (editingTask) {
         document.getElementById("title").value = editingTask.title;
         document.getElementById("description").value = editingTask.description;
         document.getElementById("status").value = editingTask.status;
         document.getElementById("date").value = editingTask.date;
+    }
+
+    // Manejo del boton Cancelar para limpiar el estado y regresar a la vista correcta
+    if (cancelBtn) {
+        cancelBtn.addEventListener("click", () => {
+            localStorage.removeItem("editingTask");
+            localStorage.removeItem("assignToUserId");
+            
+            // Si el admin estaba asignando o editando desde su panel, regresa al admin
+            if (adminAssignId || (editingTask && editingTask.userId !== JSON.parse(localStorage.getItem("currentUser"))?.id)) {
+                window.history.pushState({}, "", "/admin");
+            } else {
+                window.history.pushState({}, "", "/tasks");
+            }
+            renderRoute();
+        });
     }
 
     form.addEventListener("submit", async (e) => {
@@ -78,14 +96,27 @@ export function setupTaskForm() {
         }
 
         const currentUser = JSON.parse(localStorage.getItem("currentUser"));
-        if (!currentUser) return; // Control de seguridad adicional
+        if (!currentUser) return;
+
+        // Determinacion dinamica del propietario de la tarea
+        let finalUserId;
+        if (editingTask) {
+            // Si se edita, se mantiene el dueño original de la tarea
+            finalUserId = editingTask.userId;
+        } else if (adminAssignId) {
+            // Si el admin crea una tarea para otro usuario
+            finalUserId = adminAssignId;
+        } else {
+            // Si un usuario comun crea su propia tarea
+            finalUserId = currentUser.id;
+        }
 
         const taskData = {
             title,
             description,
             status,
             date,
-            userId: currentUser.id
+            userId: finalUserId
         };
 
         try {
@@ -94,8 +125,18 @@ export function setupTaskForm() {
             } else {
                 await createTask(taskData);
             }
+            
+            // Limpieza de datos temporales en localStorage
             localStorage.removeItem("editingTask");
-            window.history.pushState({}, "", "/tasks");
+            localStorage.removeItem("assignToUserId");
+
+            // Redireccion inteligente tras guardar con exito
+            if (adminAssignId || (editingTask && currentUser.roles?.includes("ADMIN") && editingTask.userId !== currentUser.id)) {
+                window.history.pushState({}, "", "/admin");
+            } else {
+                window.history.pushState({}, "", "/tasks");
+            }
+            
             renderRoute();
         } catch (error) {
             console.error("Error al guardar tarea:", error);
