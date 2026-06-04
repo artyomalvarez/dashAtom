@@ -1,8 +1,8 @@
 {
   "users": [
     {
-      "name": "pepe",
-      "lastname": "pepe",
+      "name": "perro",
+      "lastname": "perro",
       "email": "perez@gmail.com",
       "password": "perezprerezperez",
       "roles": [
@@ -19,16 +19,6 @@
         "USER"
       ],
       "id": "uDkt1I44owc"
-    },
-    {
-      "name": "jorgita",
-      "lastname": "congo",
-      "email": "arara@gmail.com",
-      "password": "345563",
-      "roles": [
-        "USER"
-      ],
-      "id": "B4Kqeb1aUSQ"
     },
     {
       "name": "juan",
@@ -123,6 +113,22 @@
       "date": "2026-06-18",
       "userId": "Fprp5tAtxEo",
       "id": "p8J2wcttb6A"
+    },
+    {
+      "title": "nasnassaman",
+      "description": "nxasna",
+      "status": "En progreso",
+      "date": "2026-06-23",
+      "userId": "Fprp5tAtxEo",
+      "id": "kH2bQbuXMq8"
+    },
+    {
+      "title": "proyecto del poryectois",
+      "description": "janlnalsnal",
+      "status": "Pendiente",
+      "date": "2026-06-22",
+      "userId": "Fprp5tAtxEo",
+      "id": "uYEqxaqSO6A"
     }
   ],
   "$schema": "./node_modules/json-server/schema.json"

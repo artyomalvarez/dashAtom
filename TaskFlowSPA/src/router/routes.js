@@ -1,7 +1,7 @@
 // 1. Importaciones de las vistas
 // Agregamos setupHome para que funcione el Navbar en el Home
 import { renderHome, setupHome } from "../views/home"; 
-import { renderRegister, setupRegister } from "../views/auth/resgister"; // Corregido 'renderRegister'
+import { renderRegister, setupRegister } from "../views/auth/resgister"; 
 import { renderLogin, setupLogin } from "../views/auth/login";
 import { renderAdmin, setupAdmin } from "../views/admin/admin";
 import { renderNotFound } from "../views/not-found";
@@ -13,7 +13,7 @@ import { renderTask, setupTask } from "../views/tasks/task";
 export const routes = {
     "/": {
         render: renderHome,
-        setup: setupHome, // ¡Listo! Ahora el Navbar cobrará vida en el Home
+        setup: setupHome, 
         isAutorized: false,
     },
     "/login": {
@@ -22,7 +22,7 @@ export const routes = {
         isAutorized: false,
     },
     "/register": {
-        render: renderRegister, // Corregido con su 'n'
+        render: renderRegister, 
         setup: setupRegister,
         isAutorized: false,
     },

@@ -1,1 +1,4 @@
 @import "tailwindcss";
+
+/* Esto es lo que activa el soporte de modo oscuro por clase en v4 */
+@variant dark (&:where(.dark, .dark *));

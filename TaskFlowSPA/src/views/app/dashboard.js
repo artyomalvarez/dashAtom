@@ -4,42 +4,43 @@ import { renderNavbar, setupNavbar } from '../../components/organisms/Navbar.js'
 export function renderDashboard() {
     return `
     ${renderNavbar()}
-    <main class="mx-auto max-w-6xl px-6 py-10">
-      <section class="rounded-4xl bg-blue-600 px-8 py-10 text-white shadow-xl shadow-blue-100">
-        <p class="text-sm font-semibold uppercase tracking-[0.3em] text-blue-100">Dashboard principal</p>
+    <main class="mx-auto max-w-6xl px-6 py-10 transition-colors duration-300">
+      
+      <section class="rounded-4xl bg-blue-600 dark:bg-blue-900 px-8 py-10 text-white shadow-xl shadow-blue-100 dark:shadow-none transition-colors duration-300">
+        <p class="text-sm font-semibold uppercase tracking-[0.3em] text-blue-100 dark:text-blue-200">Dashboard principal</p>
         <h1 class="mt-3 text-4xl font-black tracking-tight">Bienvenido</h1>
-        <p class="mt-4 max-w-2xl text-blue-50">Resumen general del trabajo del usuario, accesos rápidos y estado actual de productividad.</p>
+        <p class="mt-4 max-w-2xl text-blue-50 dark:text-blue-200">Resumen general del trabajo del usuario, accesos rápidos y estado actual de productividad.</p>
       </section>
 
       <section class="mt-8 grid gap-4 md:grid-cols-3">
-        <article class="rounded-3xl border border-blue-100 bg-white p-6 shadow-lg shadow-blue-50">
-          <p class="text-sm text-slate-500">Tareas activas</p>
-          <p class="mt-3 text-4xl font-black text-blue-700">0</p>
+        <article class="rounded-3xl border border-blue-100 dark:border-slate-800 bg-white dark:bg-slate-900 p-6 shadow-lg shadow-blue-50 dark:shadow-none transition-all">
+          <p class="text-sm text-slate-500 dark:text-slate-400">Tareas activas</p>
+          <p class="mt-3 text-4xl font-black text-blue-700 dark:text-blue-400">0</p>
         </article>
-        <article class="rounded-3xl border border-blue-100 bg-white p-6 shadow-lg shadow-blue-50">
-          <p class="text-sm text-slate-500">Completadas</p>
-          <p class="mt-3 text-4xl font-black text-blue-700">0</p>
+        <article class="rounded-3xl border border-blue-100 dark:border-slate-800 bg-white dark:bg-slate-900 p-6 shadow-lg shadow-blue-50 dark:shadow-none transition-all">
+          <p class="text-sm text-slate-500 dark:text-slate-400">Completadas</p>
+          <p class="mt-3 text-4xl font-black text-blue-700 dark:text-blue-400">0</p>
         </article>
-        <article class="rounded-3xl border border-blue-100 bg-white p-6 shadow-lg shadow-blue-50">
-          <p class="text-sm text-slate-500">Pendientes hoy</p>
-          <p class="mt-3 text-4xl font-black text-blue-700">0</p>
+        <article class="rounded-3xl border border-blue-100 dark:border-slate-800 bg-white dark:bg-slate-900 p-6 shadow-lg shadow-blue-50 dark:shadow-none transition-all">
+          <p class="text-sm text-slate-500 dark:text-slate-400">Pendientes hoy</p>
+          <p class="mt-3 text-4xl font-black text-blue-700 dark:text-blue-400">0</p>
         </article>
       </section>
 
       <section class="mt-8">
-        <article class="rounded-3xl border border-blue-100 bg-white p-6 shadow-lg shadow-blue-50">
+        <article class="rounded-3xl border border-blue-100 dark:border-slate-800 bg-white dark:bg-slate-900 p-6 shadow-lg shadow-blue-50 dark:shadow-none transition-all">
           <div class="flex items-center justify-between">
-            <h2 class="text-xl font-bold text-slate-900">Accesos rápidos</h2>
-            <a class="text-sm font-semibold text-blue-700 hover:text-blue-600" href="/tasks">Ver tareas</a>
+            <h2 class="text-xl font-bold text-slate-900 dark:text-white">Accesos rápidos</h2>
+            <a class="text-sm font-semibold text-blue-700 dark:text-blue-400 hover:text-blue-600" href="/tasks">Ver tareas</a>
           </div>
           <div class="mt-6 grid gap-4 sm:grid-cols-2">
-            <a class="rounded-3xl bg-blue-50 p-5 hover:bg-blue-100" href="/task-form">
-              <p class="text-sm font-semibold text-blue-600">Crear</p>
-              <h3 class="mt-2 text-lg font-bold text-slate-900">Nueva tarea</h3>
+            <a class="rounded-3xl bg-blue-50 dark:bg-slate-800 p-5 hover:bg-blue-100 dark:hover:bg-slate-700 transition-all" href="/task-form">
+              <p class="text-sm font-semibold text-blue-600 dark:text-blue-400">Crear</p>
+              <h3 class="mt-2 text-lg font-bold text-slate-900 dark:text-white">Nueva tarea</h3>
             </a>
-            <a class="rounded-3xl bg-blue-50 p-5 hover:bg-blue-100" href="/profile">
-              <p class="text-sm font-semibold text-blue-600">Cuenta</p>
-              <h3 class="mt-2 text-lg font-bold text-slate-900">Editar perfil</h3>
+            <a class="rounded-3xl bg-blue-50 dark:bg-slate-800 p-5 hover:bg-blue-100 dark:hover:bg-slate-700 transition-all" href="/profile">
+              <p class="text-sm font-semibold text-blue-600 dark:text-blue-400">Cuenta</p>
+              <h3 class="mt-2 text-lg font-bold text-slate-900 dark:text-white">Editar perfil</h3>
             </a>
           </div>
         </article>
