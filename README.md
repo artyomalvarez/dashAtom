@@ -159,6 +159,6 @@ npm run preview  # Preview del build
 
 ## Autor
 
-**Juan Arty Omalvarez**  
+**Juan Jose Alvarez Manjarrez**  
 Estudiante RIWI Cohorte 5 — Barranquilla, Colombia  
 GitHub: [@artyomalvarez](https://github.com/artyomalvarez)
