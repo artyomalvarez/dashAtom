@@ -39,6 +39,16 @@
         "ADMIN"
       ],
       "id": "nU6ng4Wonno"
+    },
+    {
+      "name": "juan",
+      "lastname": "alvarez",
+      "email": "juanjose@gmail.com",
+      "password": "123456789",
+      "roles": [
+        "ADMIN"
+      ],
+      "id": "1XSRVWWsmXw"
     }
   ],
   "tasks": [
